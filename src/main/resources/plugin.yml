@@ -1,0 +1,12 @@
+name: ApplicationEx
+version: '${project.version}'
+main: de.gommzy.applicationex.Applicationex
+api-version: 1.19
+author: Gommzy
+
+commands:
+  applicationex:
+    aliases:
+      - ae
+    usage: "Usage: /<command> [info|groups]"
+    description: Mit diesem Kommando kann ApplicationEx verwaltet werden.
