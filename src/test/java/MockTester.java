@@ -29,7 +29,7 @@ public class MockTester {
 
     @Test
     public void test() {
-        PlayerMock player = server.addPlayer();
+        PlayerMock player = server.addPlayer("Gommzy");
 
         //Teste alle Commands in zufälliger Reihenfolge:
         ArrayList<String> commands = new ArrayList<>();
@@ -45,6 +45,8 @@ public class MockTester {
         commands.add("ae groups edit test permissions list");
         commands.add("ae groups edit test permissions add *");
         commands.add("ae groups edit test permissions remove *");
+        commands.add("ae sign");
+        //commands.add("ae sign Gommzy"); MockBukkit supported kein #getTargetBlock()
 
         for (int i = 0; i < 10; i++) {
             Collections.shuffle(commands);

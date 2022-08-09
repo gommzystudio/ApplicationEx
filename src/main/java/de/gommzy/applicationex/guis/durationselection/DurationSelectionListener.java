@@ -18,6 +18,7 @@ public class DurationSelectionListener implements Listener {
                 DurationSelectionSession durationSelectionSession = DurationSelection.SESSIONS.get(player);
                 event.setCancelled(true);
 
+                if (event.getCurrentItem() == null) return;
                 String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
                 if (itemName.startsWith("§f§l+1 ")) {
                     switch (GuiUtils.getApplicationExData(event.getCurrentItem())) {
