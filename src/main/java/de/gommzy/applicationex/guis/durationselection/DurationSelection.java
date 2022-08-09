@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,7 +42,12 @@ public class DurationSelection {
         inventory.setItem(25,GuiUtils.createGuiItem(Material.BARRIER,"§c§l"+Applicationex.MESSAGES.getMessage("durationselection.cancel")));
 
 
-        durationSelectionSession.player.openInventory(inventory);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                durationSelectionSession.player.openInventory(inventory);
+            }
+        }.runTask(Applicationex.PLUGIN);
     }
 
     public void addSlider(int slot, int value, String key, String skull) {

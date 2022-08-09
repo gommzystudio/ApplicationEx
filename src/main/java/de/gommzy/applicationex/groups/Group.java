@@ -3,11 +3,14 @@ package de.gommzy.applicationex.groups;
 import com.google.gson.Gson;
 import de.gommzy.applicationex.Applicationex;
 import de.gommzy.applicationex.database.SQLite;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Group {
     public static ArrayList<Group> GROUPS = new ArrayList<>();
@@ -41,7 +44,6 @@ public class Group {
 
     public String name;
     public String prefix = "";
-    public HashMap<String, Long> members = new HashMap<>();
     public ArrayList<String> permissions = new ArrayList<>();
 
     public void save() {
@@ -64,13 +66,40 @@ public class Group {
         }.runTaskAsynchronously(Applicationex.PLUGIN);
     }
 
+    public void removePlayer(String uuid) {
+        Applicationex.SQLITE.deletePlayerGroup(uuid);
+        MemberUtils.CACHE.put(uuid, new MemberData(uuid,getGroup("default"),-1L));
+        Player player = Bukkit.getPlayer(UUID.fromString(uuid));
+        if (player != null) {
+            PermissionSystem.updatePlayer(player);
+        }
+    }
+
     public void addPlayer(String uuid, long duration) {
         if (duration > 0) {
-            members.put(uuid, duration + Calendar.getInstance().getTimeInMillis());
+            Applicationex.SQLITE.addPlayerGroup(uuid,this.name,duration + Calendar.getInstance().getTimeInMillis());
+            MemberUtils.CACHE.put(uuid, new MemberData(uuid,this,duration + Calendar.getInstance().getTimeInMillis()));
         } else {
-            members.put(uuid, -1L);
+            Applicationex.SQLITE.addPlayerGroup(uuid,this.name,-1L);
+            MemberUtils.CACHE.put(uuid, new MemberData(uuid,this,-1L));
         }
-        save();
+        Player player = Bukkit.getPlayer(UUID.fromString(uuid));
+        if (player != null) {
+            PermissionSystem.updatePlayer(player);
+        }
+    }
+
+    public void refeshPlayers() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (MemberUtils.getMemberData(player.getUniqueId().toString()).group.name.equals(name)) {
+                        PermissionSystem.updatePlayer(player);
+                    }
+                }
+            }
+        }.runTaskAsynchronously(Applicationex.PLUGIN);
     }
 
     public String toJson() { //Wandelt alle Daten dieser Klasse in Json um, um diese besser abzuspeichern (Group class kann leicht ergänzt werden)

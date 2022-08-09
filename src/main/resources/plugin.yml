@@ -3,10 +3,17 @@ version: '${project.version}'
 main: de.gommzy.applicationex.Applicationex
 api-version: 1.19
 author: Gommzy
+description: System to manage permissions.
 
 commands:
   applicationex:
     aliases:
       - ae
-    usage: "Usage: /<command> [info|groups]"
+    usage: "Usage: /<command> [info|groups|user]"
     description: Mit diesem Kommando kann ApplicationEx verwaltet werden.
+
+permissions:
+  applicationex.admin.user:
+    description: "Allows the /ae user commands"
+  applicationex.admin.groups:
+    description: "Allows the /ae groups commands"
