@@ -50,7 +50,7 @@ public class SQLite {
         try {
             getSQLConnection().prepareStatement("CREATE TABLE IF NOT EXISTS groups (`name` VARCHAR(50) NOT NULL, `data` TEXT NOT NULL);").executeUpdate();
             getSQLConnection().prepareStatement("CREATE TABLE IF NOT EXISTS players (`uuid` VARCHAR(50) NOT NULL, `group` VARCHAR(50) NOT NULL, `duration` INTEGER NOT NULL);").executeUpdate();
-            getSQLConnection().prepareStatement("CREATE TABLE IF NOT EXISTS signs (`uuid` VARCHAR(50) NOT NULL, `x` INTEGER NOT NULL, `y` INTEGER NOT NULL, `z` INTEGER NOT NULL, `world` VARCHAR(50) NOT NULL);").executeUpdate();
+            getSQLConnection().prepareStatement("CREATE TABLE IF NOT EXISTS signs (`uuid` VARCHAR(50) NOT NULL, `x` INTEGER NOT NULL, `y` INTEGER NOT NULL, `z` INTEGER NOT NULL, `world` VARCHAR(50) NOT NULL, `playername` VARCHAR(50) NOT NULL);").executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,12 +58,13 @@ public class SQLite {
 
     public void addSign(Sign sign) { //Fügt ein Schild in die signs Tabelle hinzu
         try {
-            PreparedStatement preparedStatement = getSQLConnection().prepareStatement("INSERT INTO signs (uuid,x,y,z,world) VALUES (?,?,?,?,?)");
+            PreparedStatement preparedStatement = getSQLConnection().prepareStatement("INSERT INTO signs (uuid,x,y,z,world,playername) VALUES (?,?,?,?,?,?)");
             preparedStatement.setString(1, sign.uuid);
             preparedStatement.setInt(2, sign.x);
             preparedStatement.setInt(3, sign.y);
             preparedStatement.setInt(4, sign.z);
-            preparedStatement.setString(5, sign.worldName);
+            preparedStatement.setString(5, sign.worldname);
+            preparedStatement.setString(6, sign.playername);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (Exception e) {
@@ -74,7 +75,7 @@ public class SQLite {
     public boolean existSign(int x, int y, int z, String world) { //Frägt ab, ob ein Schild in der signs Tabelle existiert
         boolean exist = false;
         try {
-            PreparedStatement preparedStatement = getSQLConnection().prepareStatement("SELEFT * FROM signs WHERE x = ? AND y = ? AND z = ? AND world = ?");
+            PreparedStatement preparedStatement = getSQLConnection().prepareStatement("SELECT * FROM signs WHERE x = ? AND y = ? AND z = ? AND world = ?");
             preparedStatement.setInt(1, x);
             preparedStatement.setInt(2, y);
             preparedStatement.setInt(3, z);
@@ -89,13 +90,13 @@ public class SQLite {
         return exist;
     }
 
-    public void deleteSign(Sign sign) { //Löscht ein Schild aus der signs Tabelle
+    public void deleteSign(int x, int y, int z, String worldname) { //Löscht ein Schild aus der signs Tabelle
         try {
             PreparedStatement preparedStatement = getSQLConnection().prepareStatement("DELETE FROM signs WHERE x = ? AND y = ? AND z = ? AND world = ?");
-            preparedStatement.setInt(1, sign.x);
-            preparedStatement.setInt(2, sign.y);
-            preparedStatement.setInt(3, sign.z);
-            preparedStatement.setString(4, sign.worldName);
+            preparedStatement.setInt(1, x);
+            preparedStatement.setInt(2, y);
+            preparedStatement.setInt(3, z);
+            preparedStatement.setString(4, worldname);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (Exception e) {
@@ -108,7 +109,7 @@ public class SQLite {
             PreparedStatement preparedStatement = getSQLConnection().prepareStatement("SELECT * FROM signs");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                new Sign(resultSet.getInt("x"),resultSet.getInt("y"),resultSet.getInt("z"),resultSet.getString("world"),resultSet.getString("uuid"));
+                new Sign(resultSet.getInt("x"),resultSet.getInt("y"),resultSet.getInt("z"),resultSet.getString("world"),resultSet.getString("uuid"),resultSet.getString("playername"));
             }
             preparedStatement.close();
             resultSet.close();

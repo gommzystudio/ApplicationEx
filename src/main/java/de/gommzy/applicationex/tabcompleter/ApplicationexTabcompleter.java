@@ -22,17 +22,25 @@ public class ApplicationexTabcompleter implements TabCompleter {
         ArrayList<String> completions = new ArrayList<>();
 
         if (args.length < 2) {
-            completions = new ArrayList<>(Arrays.asList("info","groups","user"));
+            completions = new ArrayList<>(Arrays.asList("info","groups","user","sign"));
             if (!sender.hasPermission("applicationex.admin.user")) {
                 completions.remove("user");
             }
             if (!sender.hasPermission("applicationex.admin.groups")) {
                 completions.remove("groups");
             }
+            if (!sender.hasPermission("applicationex.admin.sign")) {
+                completions.remove("sign");
+            }
         }
         else {
             switch (args[0].toLowerCase()) {
                 case "info" -> {
+                    for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+                        completions.add(player.getName());
+                    }
+                }
+                case "sign" -> {
                     for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
                         completions.add(player.getName());
                     }

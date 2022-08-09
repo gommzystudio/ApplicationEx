@@ -66,6 +66,8 @@ public class Messages {
 
         setDefaultMessage("group.default", "Spieler");
 
+        setDefaultMessage("sign.deleted", "Das Schild wurde gelöscht.");
+
         setDefaultMessage("durationselection.days", "Tag(e)");
         setDefaultMessage("durationselection.hours", "Stunde(n)");
         setDefaultMessage("durationselection.minutes", "Minute(n)");

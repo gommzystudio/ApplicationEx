@@ -6,6 +6,7 @@ import de.gommzy.applicationex.groups.Group;
 import de.gommzy.applicationex.groups.PermissionSystem;
 import de.gommzy.applicationex.guis.durationselection.DurationSelectionListener;
 import de.gommzy.applicationex.messages.Messages;
+import de.gommzy.applicationex.signs.SignListener;
 import de.gommzy.applicationex.tabcompleter.ApplicationexTabcompleter;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.Bukkit;
@@ -44,6 +45,7 @@ public final class Applicationex extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new DurationSelectionListener(), this);
         Bukkit.getPluginManager().registerEvents(new PermissionSystem(), this);
+        Bukkit.getPluginManager().registerEvents(new SignListener(), this);
     }
 
     public static String getPrefix() {

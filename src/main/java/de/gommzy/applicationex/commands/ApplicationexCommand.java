@@ -234,7 +234,7 @@ public class ApplicationexCommand implements CommandExecutor {
                         sender.sendMessage(Applicationex.getPrefix() +"§c"+  Applicationex.MESSAGES.getMessage("command.permission")+" applicationex.admin.sign");
                         return true;
                     }
-                    if (args.length == 3) {
+                    if (args.length == 2) {
                         new BukkitRunnable() {
                             @Override
                             public void run() {
@@ -247,12 +247,12 @@ public class ApplicationexCommand implements CommandExecutor {
                                     } else {
                                         int x = block.getX();
                                         int y = block.getY();
-                                        int z = block.getY();
+                                        int z = block.getZ();
                                         String world = block.getWorld().getName();
                                         if (Applicationex.SQLITE.existSign(x,y,z,world)) {
                                             sender.sendMessage(Applicationex.getPrefix() +"§c"+  Applicationex.MESSAGES.getMessage("command.sign.alreadysign"));
                                         } else {
-                                            Sign sign = new Sign(x,y,z,world,offlinePlayer.getUniqueId().toString());
+                                            Sign sign = new Sign(x,y,z,world,offlinePlayer.getUniqueId().toString(),offlinePlayer.getName());
                                             Applicationex.SQLITE.addSign(sign);
                                             sender.sendMessage(Applicationex.getPrefix() +"§a"+  Applicationex.MESSAGES.getMessage("command.sign.success"));
                                         }
