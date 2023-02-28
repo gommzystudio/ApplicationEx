@@ -26,6 +26,8 @@ import java.sql.PreparedStatement;
 import java.util.Map;
 import java.util.UUID;
 
+//Die Klasse hätte ich besser strukturieren und alle einzelnen Befehle auslagern müssen.
+
 public class ApplicationexCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
